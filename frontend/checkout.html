@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout — FoodieExpress</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .checkout-page {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 32px 20px 80px;
+    }
+    .checkout-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+    }
+    .checkout-back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 13.5px;
+      padding: 8px 14px;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      transition: all var(--transition);
+    }
+    .checkout-back-link:hover {
+      color: var(--orange);
+      border-color: var(--orange);
+    }
+    .checkout-grid {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 28px;
+      align-items: start;
+    }
+    @media (max-width: 860px) {
+      .checkout-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .checkout-card {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+    .checkout-card h3 {
+      font: 700 17px "Plus Jakarta Sans", sans-serif;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .saved-addr-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .addr-card {
+      border: 2px solid var(--line);
+      border-radius: 10px;
+      padding: 14px;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .addr-card.selected {
+      border-color: var(--orange);
+      background: var(--orange-soft);
+    }
+    .addr-card strong {
+      display: block;
+      font-size: 13.5px;
+      margin-bottom: 4px;
+    }
+    .addr-card p {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.4;
+      margin: 0;
+    }
+    .payment-option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px;
+      border: 1.5px solid var(--line);
+      border-radius: 10px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .payment-option:hover {
+      border-color: var(--muted);
+    }
+    .payment-option.selected {
+      border-color: var(--orange);
+      background: var(--orange-soft);
+    }
+    .payment-option input[type="radio"] {
+      accent-color: var(--orange);
+    }
+    .coupon-box {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .coupon-box input {
+      flex: 1;
+      padding: 10px 14px;
+      border: 1.5px solid var(--line);
+      border-radius: 9px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .coupon-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .coupon-pill {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 9px;
+      background: var(--line);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .coupon-pill:hover {
+      background: var(--orange-soft);
+      color: var(--orange);
+    }
+    .order-items-list {
+      max-height: 240px;
+      overflow-y: auto;
+      margin-bottom: 16px;
+    }
+    .order-item-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 13px;
+    }
+    .bill-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      margin-bottom: 8px;
+      color: var(--muted);
+    }
+    .bill-row.total-row {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--ink);
+      border-top: 1.5px dashed var(--line);
+      padding-top: 12px;
+      margin-top: 12px;
+    }
+    .place-order-btn {
+      width: 100%;
+      height: 48px;
+      font-size: 15px;
+      font-weight: 700;
+      border-radius: 11px;
+      background: linear-gradient(135deg, var(--orange), var(--orange-mid));
+      color: white;
+      box-shadow: 0 6px 20px var(--orange-glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all var(--transition);
+      margin-top: 16px;
+    }
+    .place-order-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 26px rgba(255,104,69,.4);
+    }
+  </style>
+</head>
+<body>
+  <div class="checkout-page">
+    <div class="checkout-nav">
+      <a href="index.html" class="brand" style="padding:0">
+        <span class="brand-mark">✦</span>
+        <span>Foodie<span>Express</span></span>
+      </a>
+      <a href="index.html" class="checkout-back-link">← Back to Menu</a>
+    </div>
+
+    <div class="checkout-grid" id="checkoutGrid">
+      <!-- Left Column: Delivery & Payment -->
+      <div class="checkout-main">
+        <!-- Delivery Address -->
+        <div class="checkout-card">
+          <h3><span>📍</span> Delivery Address</h3>
+          <div class="saved-addr-grid" id="addressGrid">
+            <div class="addr-card selected" data-address="Flat 402, Green Glen Layout, Bellandur, Bengaluru">
+              <strong>🏠 Home</strong>
+              <p>Flat 402, Green Glen Layout, Bellandur, Bengaluru</p>
+            </div>
+            <div class="addr-card" data-address="Tech Park Tower B, 3rd Floor, Indiranagar, Bengaluru">
+              <strong>🏢 Office</strong>
+              <p>Tech Park Tower B, 3rd Floor, Indiranagar, Bengaluru</p>
+            </div>
+          </div>
+          <label style="display:block;font-size:12.5px;font-weight:600;margin-bottom:6px">Or enter custom address</label>
+          <textarea id="customAddressInput" rows="2" style="width:100%;padding:10px 14px;border:1.5px solid var(--line);border-radius:9px" placeholder="House no, street name, landmark…"></textarea>
+        </div>
+
+        <!-- Payment Method -->
+        <div class="checkout-card">
+          <h3><span>💳</span> Payment Method</h3>
+          <div class="payment-options">
+            <label class="payment-option selected">
+              <input type="radio" name="payment" value="UPI" checked>
+              <div>
+                <strong>UPI / QR Payment</strong>
+                <p style="font-size:11.5px;color:var(--muted);margin:0">Google Pay, PhonePe, Paytm, BHIM</p>
+              </div>
+            </label>
+            <label class="payment-option">
+              <input type="radio" name="payment" value="CARD">
+              <div>
+                <strong>Credit or Debit Card</strong>
+                <p style="font-size:11.5px;color:var(--muted);margin:0">Visa, Mastercard, RuPay, Amex</p>
+              </div>
+            </label>
+            <label class="payment-option">
+              <input type="radio" name="payment" value="COD">
+              <div>
+                <strong>Cash on Delivery (COD)</strong>
+                <p style="font-size:11.5px;color:var(--muted);margin:0">Pay with cash or scan QR at your door</p>
+              </div>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Order Summary & Coupon -->
+      <aside class="checkout-sidebar">
+        <div class="checkout-card">
+          <h3><span>🛍️</span> Order Summary</h3>
+          <div class="order-items-list" id="orderItemsList"></div>
+
+          <!-- Coupon code -->
+          <div style="border-top:1px solid var(--line);padding-top:14px;margin-top:10px">
+            <label style="font-size:12px;font-weight:700;color:var(--muted)">HAVE A COUPON?</label>
+            <div class="coupon-box">
+              <input type="text" id="couponInput" placeholder="ENTER CODE" value="WELCOME30">
+              <button class="primary-button" id="applyCouponBtn" style="padding:0 16px;height:auto">Apply</button>
+            </div>
+            <div class="coupon-pills">
+              <span class="coupon-pill" data-code="WELCOME30">WELCOME30 (30% off)</span>
+              <span class="coupon-pill" data-code="FOODIE20">FOODIE20 (20% off)</span>
+              <span class="coupon-pill" data-code="FREEDEL">FREEDEL (Free ₹39 delivery)</span>
+            </div>
+            <div id="couponStatus" style="font-size:11.5px;margin-top:6px;font-weight:600"></div>
+          </div>
+
+          <!-- Price breakdown -->
+          <div style="border-top:1px solid var(--line);padding-top:14px;margin-top:14px">
+            <div class="bill-row"><span>Item Subtotal</span><strong id="billSubtotal">₹0</strong></div>
+            <div class="bill-row"><span>Delivery Fee</span><strong id="billDelivery">₹39</strong></div>
+            <div class="bill-row" id="discountRow" style="display:none;color:#3fa278"><span>Promo Discount</span><strong id="billDiscount">-₹0</strong></div>
+            <div class="bill-row total-row"><span>To Pay</span><span id="billTotal">₹0</span></div>
+          </div>
+
+          <button class="place-order-btn" id="placeOrderBtn">
+            <span>Place Order</span> <span>→</span>
+          </button>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="js/food-data.js"></script>
+  <script src="js/api.js"></script>
+  <script>
+    if (localStorage.getItem("darkMode") === "true") {
+      document.documentElement.classList.add("dark");
+    }
+
+    let activeCoupon = "WELCOME30";
+    let selectedAddress = "Flat 402, Green Glen Layout, Bellandur, Bengaluru";
+
+    function showToast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 2400);
+    }
+
+    function renderSummary() {
+      const cart = foodieApi.getCart();
+      const listEl = document.getElementById("orderItemsList");
+
+      if (!cart.length) {
+        listEl.innerHTML = `<div style="text-align:center;padding:24px 10px;color:var(--muted)">Your cart is empty. <a href="index.html" style="color:var(--orange);font-weight:600">Go explore</a></div>`;
+        document.getElementById("placeOrderBtn").disabled = true;
+        document.getElementById("placeOrderBtn").style.opacity = "0.5";
+        return;
+      }
+
+      document.getElementById("placeOrderBtn").disabled = false;
+      document.getElementById("placeOrderBtn").style.opacity = "1";
+
+      listEl.innerHTML = cart.map(item => `
+        <div class="order-item-row">
+          <div>
+            <strong>${item.name}</strong>
+            <div style="font-size:11px;color:var(--muted)">Qty: ${item.qty}</div>
+          </div>
+          <div>₹${(item.price * item.qty).toLocaleString("en-IN")}</div>
+        </div>`).join("");
+
+      const totals = foodieApi.getCartTotals(activeCoupon);
+      document.getElementById("billSubtotal").textContent = `₹${totals.subtotal.toLocaleString("en-IN")}`;
+      document.getElementById("billDelivery").textContent = totals.deliveryFee ? `₹${totals.deliveryFee}` : "FREE";
+      
+      const discRow = document.getElementById("discountRow");
+      if (totals.discount > 0) {
+        discRow.style.display = "flex";
+        document.getElementById("billDiscount").textContent = `-₹${totals.discount.toLocaleString("en-IN")}`;
+        document.getElementById("couponStatus").textContent = `✓ ${totals.appliedCoupon.label}`;
+        document.getElementById("couponStatus").style.color = "#3fa278";
+      } else {
+        discRow.style.display = "none";
+        document.getElementById("couponStatus").textContent = activeCoupon ? "Invalid or inapplicable code" : "";
+        document.getElementById("couponStatus").style.color = "#e5484d";
+      }
+
+      document.getElementById("billTotal").textContent = `₹${totals.total.toLocaleString("en-IN")}`;
+    }
+
+    // Address selection
+    document.querySelectorAll(".addr-card").forEach(card => {
+      card.onclick = () => {
+        document.querySelectorAll(".addr-card").forEach(c => c.classList.remove("selected"));
+        card.classList.add("selected");
+        selectedAddress = card.dataset.address;
+        document.getElementById("customAddressInput").value = "";
+      };
+    });
+
+    document.getElementById("customAddressInput").oninput = (e) => {
+      if (e.target.value.trim()) {
+        document.querySelectorAll(".addr-card").forEach(c => c.classList.remove("selected"));
+        selectedAddress = e.target.value.trim();
+      }
+    };
+
+    // Payment selection
+    document.querySelectorAll(".payment-option").forEach(opt => {
+      opt.onclick = () => {
+        document.querySelectorAll(".payment-option").forEach(o => o.classList.remove("selected"));
+        opt.classList.add("selected");
+        opt.querySelector("input").checked = true;
+      };
+    });
+
+    // Coupon buttons
+    document.querySelectorAll(".coupon-pill").forEach(pill => {
+      pill.onclick = () => {
+        activeCoupon = pill.dataset.code;
+        document.getElementById("couponInput").value = activeCoupon;
+        renderSummary();
+        showToast(`Coupon ${activeCoupon} applied!`);
+      };
+    });
+
+    document.getElementById("applyCouponBtn").onclick = () => {
+      activeCoupon = document.getElementById("couponInput").value.trim();
+      renderSummary();
+      showToast(`Coupon evaluated`);
+    };
+
+    // Place order
+    document.getElementById("placeOrderBtn").onclick = async () => {
+      const cart = foodieApi.getCart();
+      if (!cart.length) {
+        showToast("Add items to your cart first!");
+        return;
+      }
+
+      const finalAddress = document.getElementById("customAddressInput").value.trim() || selectedAddress;
+      const paymentMethod = document.querySelector('input[name="payment"]:checked')?.value || "COD";
+
+      const btn = document.getElementById("placeOrderBtn");
+      btn.textContent = "Processing order…";
+      btn.disabled = true;
+
+      try {
+        const order = await foodieApi.createOrder(finalAddress, paymentMethod, activeCoupon);
+        showToast("🎉 Order placed successfully!", 3000);
+        setTimeout(() => {
+          window.location.href = "index.html#orders";
+        }, 800);
+      } catch (err) {
+        showToast(`Error: ${err.message}`);
+        btn.textContent = "Place Order →";
+        btn.disabled = false;
+      }
+    };
+
+    renderSummary();
+  </script>
+</body>
+</html>

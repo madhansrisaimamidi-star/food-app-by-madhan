@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food menu — FoodieExpress</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ── Menu page overrides ─────────────────────────────── */
+    body { background: #f5f6fa; }
+
+    .menu-page {
+      width: min(1200px, calc(100% - 36px));
+      margin: auto;
+      padding: 32px 0 70px;
+    }
+
+    /* top bar */
+    .menu-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+      gap: 20px;
+    }
+    .menu-topbar h1 {
+      font: 800 28px "Plus Jakarta Sans", sans-serif;
+      letter-spacing: -1px;
+      margin: 0 0 5px;
+    }
+    .menu-topbar p { color: #969ba5; font-size: 13px; }
+
+    /* search & filters */
+    .menu-tools {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+    .menu-tools input,
+    .menu-tools select {
+      border: 1.5px solid #e8eaef;
+      border-radius: 10px;
+      padding: 12px 14px;
+      background: #fff;
+      outline: 0;
+      font-size: 13px;
+      color: #1a2030;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .menu-tools input { flex: 1; }
+    .menu-tools input:focus,
+    .menu-tools select:focus {
+      border-color: #ff6845;
+      box-shadow: 0 0 0 4px rgba(255,104,69,.16);
+    }
+
+    /* result count */
+    .menu-count { color: #9a9fa8; font-size: 12px; margin-bottom: 16px; font-weight: 500; }
+
+    /* food grid */
+    .food-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    /* food card */
+    .food-card {
+      background: #fff;
+      border: 1px solid #eeeff2;
+      border-radius: 14px;
+      overflow: hidden;
+      transition: transform .22s cubic-bezier(.4,0,.2,1), box-shadow .22s cubic-bezier(.4,0,.2,1), border-color .22s;
+    }
+    .food-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 18px 44px rgba(26,31,46,.1);
+      border-color: transparent;
+    }
+
+    .food-card-art {
+      height: 126px;
+      display: grid;
+      place-items: center;
+      font-size: 58px;
+      position: relative;
+      overflow: hidden;
+    }
+    /* colourful gradient backgrounds that cycle */
+    .food-card:nth-child(8n+1) .food-card-art { background: linear-gradient(135deg,#f5b48a,#ee8562); }
+    .food-card:nth-child(8n+2) .food-card-art { background: linear-gradient(135deg,#f3d06a,#e8b840); }
+    .food-card:nth-child(8n+3) .food-card-art { background: linear-gradient(135deg,#8fc9a4,#5db380); }
+    .food-card:nth-child(8n+4) .food-card-art { background: linear-gradient(135deg,#e8a49a,#d97870); }
+    .food-card:nth-child(8n+5) .food-card-art { background: linear-gradient(135deg,#c4a8e0,#9c72cf); }
+    .food-card:nth-child(8n+6) .food-card-art { background: linear-gradient(135deg,#f0c87c,#e0a94e); }
+    .food-card:nth-child(8n+7) .food-card-art { background: linear-gradient(135deg,#a8d4f5,#72aee0); }
+    .food-card:nth-child(8n+8) .food-card-art { background: linear-gradient(135deg,#f5c4d0,#e890a8); }
+
+    .food-card-art span {
+      filter: drop-shadow(0 10px 8px rgba(0,0,0,.16));
+      transition: transform .22s ease;
+    }
+    .food-card:hover .food-card-art span { transform: scale(1.1) rotate(-8deg); }
+
+    .food-card-info { padding: 14px; }
+    .food-card-info h3 {
+      font: 700 12.5px "Plus Jakarta Sans", sans-serif;
+      margin: 0 0 5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .food-card-info p {
+      color: #999da5;
+      font-size: 10.5px;
+      line-height: 1.55;
+      height: 32px;
+      overflow: hidden;
+      margin: 0 0 10px;
+    }
+
+    .food-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid #f2f3f5;
+      padding-top: 10px;
+    }
+    .food-card-footer strong { font-size: 13px; color: #1a2030; }
+    .veg { color: #309c6c; font-size: 10px; font-weight: 600; }
+    .food-card-footer .add-btn {
+      background: linear-gradient(135deg, #ff6845, #ff8c6e);
+      color: white;
+      border: 0;
+      border-radius: 8px;
+      width: 30px;
+      height: 30px;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 4px 12px rgba(255,104,69,.28);
+      transition: transform .18s, box-shadow .18s;
+    }
+    .food-card-footer .add-btn:hover { transform: scale(1.12); box-shadow: 0 8px 20px rgba(255,104,69,.4); }
+
+    /* pagination */
+    .menu-pager {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 34px;
+      flex-wrap: wrap;
+    }
+    .menu-pager button {
+      border: 1.5px solid #e8eaef;
+      background: #fff;
+      border-radius: 8px;
+      padding: 9px 14px;
+      color: #747a86;
+      font-size: 13px;
+      transition: background .2s, color .2s, border-color .2s, transform .2s;
+      cursor: pointer;
+    }
+    .menu-pager button.active,
+    .menu-pager button:hover {
+      background: linear-gradient(135deg, #ff6845, #ff8c6e);
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 6px 18px rgba(255,104,69,.3);
+      transform: translateY(-2px);
+    }
+
+    /* back button */
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #1e2335;
+      color: white;
+      padding: 11px 18px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 12.5px;
+      text-decoration: none;
+      box-shadow: 0 6px 18px rgba(26,31,46,.22);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .back-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(26,31,46,.3); }
+
+    @media (max-width: 860px) { .food-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 580px) {
+      .menu-topbar { display: block; }
+      .menu-tools { display: grid; }
+      .food-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 360px) { .food-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main class="menu-page">
+    <div class="menu-topbar">
+      <div>
+        <a class="brand" style="color:#1e2335;padding:0 0 14px;display:inline-flex;gap:8px;font:800 20px 'Plus Jakarta Sans',sans-serif;text-decoration:none;" href="index.html">
+          <span style="background:linear-gradient(135deg,#ff6845,#ff9f6e);width:30px;height:30px;border-radius:8px;display:grid;place-items:center;color:white;font-size:15px;">✦</span>
+          Foodie<span style="color:#ff6845;">Express</span>
+        </a>
+        <h1>Explore 1,008 food items</h1>
+        <p>Find something delicious from our growing restaurant catalog.</p>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <a class="back-btn" href="checkout.html" id="menuCartBtn" style="background:linear-gradient(135deg,#ff6845,#ff9f6e);color:white">🛒 Cart (<span id="menuCartCount">0</span>)</a>
+        <a class="back-btn" href="index.html">← Back home</a>
+      </div>
+    </div>
+
+    <div class="menu-tools">
+      <input id="menuSearch" type="search" placeholder="Search food, restaurant or cuisine…">
+      <select id="menuCategory"><option value="All">All categories</option></select>
+      <select id="menuRestaurant"><option value="All">All restaurants</option></select>
+    </div>
+
+    <div class="menu-count" id="menuCount"></div>
+    <section class="food-grid" id="foodGrid"></section>
+    <div class="menu-pager" id="menuPager"></div>
+  </main>
+  <script src="js/food-data.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/menu.js"></script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+package com.bitedash.repository; import com.bitedash.entity.*; import org.springframework.data.jpa.repository.JpaRepository; import java.util.*; public interface FoodItemRepository extends JpaRepository<FoodItem,Long>{List<FoodItem> findByRestaurantIdAndAvailableTrue(Long restaurantId);}

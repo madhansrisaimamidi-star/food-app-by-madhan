@@ -1,0 +1,1 @@
+package com.bitedash.dto; import com.bitedash.entity.*; import java.time.*; public record ReviewResponse(Long id,Long userId,String userName,int rating,String comment,LocalDateTime createdAt){public static ReviewResponse of(Review r){return new ReviewResponse(r.getId(),r.getUser().getId(),r.getUser().getName(),r.getRating(),r.getComment(),r.getCreatedAt());}}

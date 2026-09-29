@@ -1,0 +1,1 @@
+package com.bitedash.dto; import jakarta.validation.Valid; import jakarta.validation.constraints.NotBlank; import jakarta.validation.constraints.NotEmpty; import java.util.*; public record CreateOrderRequest(@NotBlank String deliveryAddress,@NotEmpty List<@Valid OrderItemRequest> items){}

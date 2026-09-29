@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create account — FoodieExpress</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+  <main class="auth-shell">
+    <!-- Art panel -->
+    <section class="auth-art">
+      <!-- floating food emojis -->
+      <span class="float-emoji">🍕</span>
+      <span class="float-emoji">🥤</span>
+      <span class="float-emoji">🍛</span>
+      <span class="float-emoji">🧁</span>
+
+      <a class="brand" href="index.html">
+        <span class="brand-mark-auth">✦</span>
+        Foodie<span>Express</span>
+      </a>
+
+      <div class="food-orbit">🍕</div>
+
+      <div class="art-copy">
+        <span class="eyebrow">Welcome to the table</span>
+        <h1>Great food is better when it finds you.</h1>
+        <p>Create your account and make every meal an experience.</p>
+        <div class="art-chips">
+          <span class="art-chip">🆓 Free first delivery</span>
+          <span class="art-chip">📍 1000+ restaurants</span>
+          <span class="art-chip">💳 Easy checkout</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Form panel -->
+    <section class="auth-panel">
+      <h2>Create your account ✨</h2>
+      <p>Join FoodieExpress and start exploring today.</p>
+      <form class="auth-form" id="authForm" data-mode="register">
+        <label>Full name
+          <input id="name" type="text" placeholder="Alex Smith" required>
+        </label>
+        <label>Email address
+          <input id="email" type="email" placeholder="you@example.com" required>
+        </label>
+        <label>Password
+          <div class="password-wrap">
+            <input id="password" type="password" placeholder="At least 6 characters" required>
+            <button type="button" data-toggle-password="password">Show</button>
+          </div>
+        </label>
+        <label>Confirm password
+          <div class="password-wrap">
+            <input id="confirmPassword" type="password" placeholder="Repeat your password" required>
+            <button type="button" data-toggle-password="confirmPassword">Show</button>
+          </div>
+        </label>
+        <div class="error" id="formError"></div>
+        <button class="auth-button" type="submit">Create account →</button>
+      </form>
+      <p class="auth-switch">Already have an account? <a href="login.html">Log in</a></p>
+      <a class="back-link" href="landing.html">← Back to home</a>
+    </section>
+  </main>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

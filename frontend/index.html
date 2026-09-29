@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FoodieExpress — Food, delivered better</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <!-- ── Sidebar ────────────────────────────────────────── -->
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="landing.html">
+        <span class="brand-mark">✦</span>
+        <span>Foodie<span>Express</span></span>
+      </a>
+
+      <div class="side-label">Menu</div>
+      <nav class="main-nav">
+        <a class="nav-item active" href="#home" data-view="overview">
+          <span class="nav-icon">⌂</span>Overview
+        </a>
+        <a class="nav-item" href="menu.html" data-view="restaurants">
+          <span class="nav-icon">▦</span>Restaurants
+        </a>
+        <a class="nav-item" href="#orders" data-view="orders">
+          <span class="nav-icon">▤</span>My orders
+          <b class="nav-count">2</b>
+        </a>
+        <a class="nav-item" href="#favorites" data-view="favorites">
+          <span class="nav-icon">♡</span>Favourites
+        </a>
+      </nav>
+
+      <div class="side-label">Account</div>
+      <nav class="main-nav">
+        <a class="nav-item" href="#profile" data-view="profile">
+          <span class="nav-icon">◉</span>Profile
+        </a>
+        <a class="nav-item" href="#settings" data-view="settings">
+          <span class="nav-icon">⚙</span>Settings
+        </a>
+      </nav>
+
+      <div class="sidebar-help">
+        <div class="help-orb">?</div>
+        <strong>Need a hand?</strong>
+        <p>Our support team is always here for you.</p>
+        <button class="link-button">Contact support <span>→</span></button>
+      </div>
+
+      <div class="user-card" id="userCardBtn" style="cursor:pointer" title="Click to view session & account switch">
+        <div class="avatar" id="userAvatar">AS</div>
+        <div class="user-info">
+          <strong id="userName">Alex Smith</strong>
+          <small id="userEmail">alex@email.com</small>
+        </div>
+        <span class="auth-badge" title="Authorized Private Session" style="font-size:10px;background:#eaf7f0;color:#3fa278;padding:2px 6px;border-radius:6px;font-weight:700">🔒 Auth</span>
+      </div>
+      <div style="display:flex;gap:6px;margin:6px 0 0">
+        <button id="switchUserBtn" style="flex:1;font-size:11.5px;color:var(--orange);font-weight:600;text-align:left;padding:5px 8px;border-radius:6px;background:var(--orange-soft)">⇄ Switch user</button>
+        <button id="logoutBtn" style="font-size:11.5px;color:var(--muted);font-weight:600;padding:5px 8px;border-radius:6px;border:1px solid var(--line)">Log out</button>
+      </div>
+    </aside>
+
+    <!-- ── Main ───────────────────────────────────────────── -->
+    <main class="main-content" id="home">
+      <header class="topbar">
+        <button class="mobile-menu" id="menuToggle">☰</button>
+        <div class="breadcrumbs">Home <span>/</span> <b id="breadcrumbLabel">Overview</b></div>
+        
+        <div class="api-status-pill" id="apiStatusPill" title="REST API connection status">
+          <span class="status-dot"></span>
+          <span id="apiStatusText">Detecting…</span>
+        </div>
+
+        <div class="top-actions">
+          <button class="icon-button" id="themeToggleBtn" aria-label="Toggle dark mode" title="Toggle dark mode">🌙</button>
+          <button class="icon-button notification" id="notificationButton" aria-label="Notifications">🔔<i></i></button>
+          <button class="cart-button" id="cartOpen">
+            <span>🛒</span> Cart <b id="cartCount">0</b>
+          </button>
+        </div>
+      </header>
+
+      <!-- Welcome -->
+      <section class="welcome-section">
+        <div>
+          <p class="eyebrow" id="dateLabel"></p>
+          <h1 id="greetingHeading">Good day, Alex <span>✦</span></h1>
+          <p class="muted">What are you craving today?</p>
+        </div>
+        <button class="location-pill" id="locationButton">
+          ⌖ <span>Delivering to</span> <strong>Koramangala, Bengaluru</strong> <b>⌄</b>
+        </button>
+      </section>
+
+      <!-- Search -->
+      <section class="search-wrap">
+        <div class="search-box">
+          <span>⌕</span>
+          <input id="searchInput" type="search" placeholder="Search for dishes, restaurants or cuisines…">
+          <kbd>⌘ K</kbd>
+        </div>
+        <button class="filter-button" id="filterButton">
+          ☷ <span>Filters</span><b id="filterDot"></b>
+        </button>
+      </section>
+
+      <!-- Categories -->
+      <section class="categories">
+        <div class="section-heading">
+          <h2>Explore categories</h2>
+          <a class="text-button" href="menu.html" id="viewAllCategories">View all <span>→</span></a>
+        </div>
+        <div class="category-list" id="categoryList">
+          <button class="category active" data-category="All"><span class="category-emoji">✦</span><strong>All</strong></button>
+          <button class="category" data-category="Pizza"><span class="category-emoji">🍕</span><strong>Pizza</strong></button>
+          <button class="category" data-category="Burgers"><span class="category-emoji">🍔</span><strong>Burgers</strong></button>
+          <button class="category" data-category="Asian"><span class="category-emoji">🍜</span><strong>Asian</strong></button>
+          <button class="category" data-category="Indian"><span class="category-emoji">🍛</span><strong>Biryani</strong></button>
+          <button class="category" data-category="South Indian"><span class="category-emoji">🥞</span><strong>South Indian</strong></button>
+          <button class="category" data-category="Desserts"><span class="category-emoji">🍰</span><strong>Desserts</strong></button>
+          <button class="category" data-category="Beverages"><span class="category-emoji">🥤</span><strong>Beverages</strong></button>
+          <button class="category" data-category="Healthy"><span class="category-emoji">🥗</span><strong>Healthy</strong></button>
+        </div>
+      </section>
+
+      <!-- Restaurants -->
+      <section class="restaurant-section" id="restaurants">
+        <div class="section-heading">
+          <div>
+            <h2 id="restaurantHeading">Popular near you</h2>
+            <p class="muted">Top picks based on your taste</p>
+          </div>
+          <a class="text-button" href="menu.html">See all <span>→</span></a>
+        </div>
+        <div class="restaurant-grid" id="restaurantGrid"></div>
+      </section>
+
+      <!-- Promo -->
+      <section class="promo-banner">
+        <div class="promo-copy">
+          <span class="promo-tag">Bite into savings</span>
+          <h2>Get 30% off your first order</h2>
+          <p>Use code <strong>WELCOME30</strong> at checkout</p>
+          <button class="primary-button" id="promoButton">Order now <span>→</span></button>
+        </div>
+        <div class="promo-art">
+          <div class="sun"></div>
+          <div class="plate">🍕</div>
+          <span class="spark s1">✦</span>
+          <span class="spark s2">✧</span>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Overlay -->
+  <div class="overlay" id="overlay"></div>
+
+  <!-- Cart drawer -->
+  <aside class="cart-drawer" id="cartDrawer">
+    <div class="drawer-header">
+      <div>
+        <p class="eyebrow">Your order</p>
+        <h2>Shopping cart <span id="drawerCount">(0)</span></h2>
+      </div>
+      <button class="close-button" id="cartClose">×</button>
+    </div>
+    <div id="cartItems" class="cart-items">
+      <div class="empty-cart">
+        <div>🛍️</div>
+        <strong>Your cart is empty</strong>
+        <p>Add something delicious to get started.</p>
+      </div>
+    </div>
+    <div class="cart-summary" id="cartSummary">
+      <div><span>Subtotal</span><b id="subtotal">₹0</b></div>
+      <div><span>Delivery fee</span><b>₹39</b></div>
+      <div class="total"><span>Total</span><b id="total">₹39</b></div>
+      <button class="primary-button checkout-button" id="checkoutButton">Checkout <span>→</span></button>
+    </div>
+  </aside>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Modal -->
+  <div class="modal-backdrop" id="modalBackdrop">
+    <section class="modal" id="modal" role="dialog" aria-modal="true">
+      <button class="modal-close" id="modalClose">×</button>
+      <div id="modalContent"></div>
+    </section>
+  </div>
+
+  <script src="js/food-data.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    /* Dynamic date & greeting */
+    (function () {
+      const now = new Date();
+      const h = now.getHours();
+      const greeting = h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : "Good evening";
+      const dayNames = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+      const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+      document.getElementById("greetingHeading").innerHTML = `${greeting}, Alex <span>✦</span>`;
+      document.getElementById("dateLabel").textContent = `${dayNames[now.getDay()]}, ${monthNames[now.getMonth()]} ${now.getDate()}`;
+    })();
+  </script>
+
+  <!-- Mobile bottom nav bar -->
+  <nav class="mob-nav" aria-label="Mobile navigation">
+    <button class="mob-nav-btn active" data-view="overview">
+      <span class="mob-icon">⌂</span>Home
+    </button>
+    <button class="mob-nav-btn" data-view="restaurants">
+      <span class="mob-icon">▦</span>Explore
+    </button>
+    <button class="mob-nav-btn" data-view="favorites">
+      <span class="mob-icon">♡</span>Saved
+    </button>
+    <button class="mob-nav-btn" data-view="orders">
+      <span class="mob-icon">▤</span>Orders
+    </button>
+    <button class="mob-nav-btn" onclick="toggleCart(true)" style="position:relative">
+      <span class="mob-icon">🛒</span>Cart
+      <span class="mob-nav-badge" id="mobileCartBadge"></span>
+    </button>
+  </nav>
+</body>
+</html>

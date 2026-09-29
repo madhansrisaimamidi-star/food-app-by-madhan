@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — FoodieExpress</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+  <main class="auth-shell">
+    <!-- Art panel -->
+    <section class="auth-art">
+      <!-- floating food emojis -->
+      <span class="float-emoji">🍔</span>
+      <span class="float-emoji">🍜</span>
+      <span class="float-emoji">🍰</span>
+      <span class="float-emoji">🥗</span>
+
+      <a class="brand" href="index.html">
+        <span class="brand-mark-auth">✦</span>
+        Foodie<span>Express</span>
+      </a>
+
+      <div class="food-orbit">🍱</div>
+
+      <div class="art-copy">
+        <span class="eyebrow">Good food. Good mood.</span>
+        <h1>Your next delicious moment is waiting.</h1>
+        <p>Discover the best local restaurants and get your favourites delivered fast.</p>
+        <div class="art-chips">
+          <span class="art-chip">⚡ 30-min delivery</span>
+          <span class="art-chip">🌟 Top-rated spots</span>
+          <span class="art-chip">🎁 Daily offers</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Form panel -->
+    <section class="auth-panel">
+      <h2>Welcome back 👋</h2>
+      <p>Log in to continue ordering your favourites.</p>
+      <div class="demo-note">
+        <strong>Demo Isolated Accounts:</strong>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button type="button" class="demo-user-pill" data-fill-email="alex@email.com" data-fill-pass="password123" style="flex:1;padding:6px 10px;border-radius:6px;border:1px solid #e2e8f0;background:#fff;font-size:12px;cursor:pointer;font-weight:600">
+            👤 Alex Smith
+          </button>
+          <button type="button" class="demo-user-pill" data-fill-email="priya@email.com" data-fill-pass="password123" style="flex:1;padding:6px 10px;border-radius:6px;border:1px solid #e2e8f0;background:#fff;font-size:12px;cursor:pointer;font-weight:600">
+            👤 Priya Sharma
+          </button>
+        </div>
+      </div>
+      <form class="auth-form" id="authForm" data-mode="login">
+        <label>Email address
+          <input id="email" type="email" placeholder="you@example.com" value="alex@email.com" required>
+        </label>
+        <label>Password
+          <div class="password-wrap">
+            <input id="password" type="password" placeholder="••••••••" value="password123" required>
+            <button type="button" data-toggle-password="password">Show</button>
+          </div>
+        </label>
+        <div class="form-row">
+          <label class="check"><input type="checkbox"> Remember me</label>
+          <a class="auth-switch-link" href="#">Forgot password?</a>
+        </div>
+        <div class="error" id="formError"></div>
+        <button class="auth-button" type="submit">Log in →</button>
+      </form>
+      <p class="auth-switch">New to FoodieExpress? <a href="register.html">Create an account</a></p>
+      <a class="back-link" href="landing.html">← Back to home</a>
+    </section>
+  </main>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

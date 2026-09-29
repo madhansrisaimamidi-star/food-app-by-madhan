@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restaurant — FoodieExpress</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ── Tokens ── */
+    :root{--orange:#ff6845;--orange-mid:#ff8c6e;--orange-glow:rgba(255,104,69,.18);--ink:#1a1f2e;--muted:#6b7280;--bg:#f5f6fa;--white:#fff;--line:#eef0f5;--navy:#1e2335;--green:#3fa278;--radius:14px;--t:.24s cubic-bezier(.4,0,.2,1)}
+    html.dark{--ink:#e8eaf0;--muted:#7a8094;--line:#2a2f42;--bg:#141824;--white:#1c2130}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font:14px/1.6 "DM Sans",sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+    img{display:block;max-width:100%}
+    a{text-decoration:none;color:inherit}
+    button{cursor:pointer;border:0;font:inherit;background:none}
+
+    /* ── Top nav ── */
+    .r-nav{
+      position:sticky;top:0;z-index:50;
+      background:rgba(245,246,250,.9);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+      border-bottom:1px solid var(--line);
+      padding:14px 28px;display:flex;align-items:center;gap:16px;
+    }
+    html.dark .r-nav{background:rgba(20,24,36,.9)}
+    .r-nav-back{
+      display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;
+      color:var(--muted);transition:color var(--t);padding:8px 12px;border-radius:9px;
+    }
+    .r-nav-back:hover{color:var(--ink);background:var(--white)}
+    .r-nav-brand{font:800 17px "Plus Jakarta Sans",sans-serif;color:var(--navy)}
+    html.dark .r-nav-brand{color:#e8eaf0}
+    .r-nav-brand span{color:var(--orange)}
+    .r-nav-cart{
+      margin-left:auto;display:flex;align-items:center;gap:8px;
+      background:linear-gradient(135deg,var(--orange),var(--orange-mid));
+      color:#fff;border-radius:10px;padding:9px 16px;font-weight:700;font-size:13px;
+      box-shadow:0 4px 14px var(--orange-glow);transition:transform var(--t),box-shadow var(--t);
+    }
+    .r-nav-cart:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(255,104,69,.38)}
+    .r-cart-count{background:rgba(255,255,255,.3);border-radius:20px;padding:1px 8px;font-size:12px}
+
+    /* ── Hero ── */
+    .r-hero{position:relative;height:340px;overflow:hidden}
+    .r-hero img{width:100%;height:100%;object-fit:cover}
+    .r-hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(14,18,32,.75) 0%,transparent 60%)}
+    .r-hero-meta{position:absolute;bottom:28px;left:36px;right:36px;color:#fff}
+    .r-hero-meta h1{font:800 32px/1.1 "Plus Jakarta Sans",sans-serif;letter-spacing:-.8px;margin-bottom:10px}
+    .r-hero-pills{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+    .r-pill{background:rgba(255,255,255,.14);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.18);border-radius:20px;padding:5px 13px;font-size:12px;font-weight:600;color:rgba(255,255,255,.9)}
+    .r-pill.green{background:rgba(63,162,120,.2);border-color:rgba(63,162,120,.4);color:#a3e4c5}
+    .r-share-btn{
+      position:absolute;top:18px;right:22px;
+      width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.92);
+      display:grid;place-items:center;font-size:17px;box-shadow:0 4px 14px rgba(0,0,0,.18);
+      transition:transform var(--t);cursor:pointer;
+    }
+    .r-share-btn:hover{transform:scale(1.12)}
+
+    /* ── Layout ── */
+    .r-body{max-width:1100px;margin:0 auto;padding:36px 28px 80px;display:grid;grid-template-columns:1fr 320px;gap:32px;align-items:start}
+    .r-main{min-width:0}
+    .r-sidebar{position:sticky;top:82px}
+
+    /* ── Info card ── */
+    .info-card{background:var(--white);border-radius:var(--radius);border:1px solid var(--line);padding:22px;margin-bottom:24px;display:flex;gap:24px;flex-wrap:wrap}
+    .info-stat{flex:1;min-width:80px;text-align:center;padding:12px;border-radius:10px;background:var(--bg)}
+    html.dark .info-stat{background:#252c40}
+    .info-stat strong{display:block;font:700 20px "Plus Jakarta Sans",sans-serif;margin-bottom:4px}
+    .info-stat span{font-size:11px;color:var(--muted);font-weight:500}
+    .info-stat .star{color:#eaa228}
+    .info-stat .clock{color:var(--orange)}
+    .info-stat .leaf{color:var(--green)}
+
+    /* ── Section tabs ── */
+    .menu-tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:24px;scrollbar-width:none}
+    .menu-tabs::-webkit-scrollbar{display:none}
+    .menu-tab{
+      padding:9px 20px;border-radius:20px;font-size:13px;font-weight:600;
+      border:1.5px solid var(--line);background:var(--white);color:var(--muted);
+      white-space:nowrap;transition:all var(--t);flex-shrink:0;
+    }
+    html.dark .menu-tab{background:#252c40;border-color:#3a3f56}
+    .menu-tab:hover{border-color:var(--orange);color:var(--orange)}
+    .menu-tab.active{background:linear-gradient(135deg,var(--orange),var(--orange-mid));border-color:transparent;color:#fff;box-shadow:0 4px 14px var(--orange-glow)}
+
+    /* ── Section heading ── */
+    .menu-section{margin-bottom:32px}
+    .menu-section-title{font:700 17px "Plus Jakarta Sans",sans-serif;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+    .menu-section-title::after{content:"";flex:1;height:1px;background:var(--line)}
+
+    /* ── Food item card ── */
+    .food-list{display:flex;flex-direction:column;gap:14px}
+    .food-item{
+      background:var(--white);border-radius:var(--radius);border:1px solid var(--line);
+      display:flex;gap:16px;padding:16px;align-items:flex-start;
+      transition:box-shadow var(--t),border-color var(--t),transform var(--t);cursor:pointer;
+    }
+    html.dark .food-item{background:#1c2130;border-color:#2a2f42}
+    .food-item:hover{box-shadow:0 8px 28px rgba(26,31,46,.1);border-color:transparent;transform:translateY(-2px)}
+    .food-item-photo{
+      width:96px;height:88px;border-radius:10px;overflow:hidden;flex-shrink:0;
+      position:relative;
+    }
+    .food-item-photo img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
+    .food-item:hover .food-item-photo img{transform:scale(1.08)}
+    .food-item-photo .veg-dot{
+      position:absolute;top:5px;left:5px;width:14px;height:14px;border-radius:3px;
+      border:1.5px solid;display:grid;place-items:center;background:#fff;
+    }
+    .food-item-photo .veg-dot.veg{border-color:#309c6c}
+    .food-item-photo .veg-dot.nonveg{border-color:#d04040}
+    .food-item-photo .veg-dot::after{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+    .food-item-photo .veg-dot.veg::after{color:#309c6c}
+    .food-item-photo .veg-dot.nonveg::after{color:#d04040}
+    .food-item-info{flex:1;min-width:0}
+    .food-item-info h4{font:600 14px "Plus Jakarta Sans",sans-serif;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .food-item-info p{font-size:12px;color:var(--muted);line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .food-item-foot{display:flex;align-items:center;justify-content:space-between;margin-top:10px}
+    .food-price{font:700 14px "Plus Jakarta Sans",sans-serif}
+    .food-tag{font-size:10px;color:var(--muted);background:var(--bg);border-radius:6px;padding:2px 8px}
+    html.dark .food-tag{background:#252c40}
+    .add-item-btn{
+      width:32px;height:32px;border-radius:8px;
+      background:linear-gradient(135deg,var(--orange),var(--orange-mid));
+      color:#fff;font-size:20px;display:grid;place-items:center;
+      box-shadow:0 4px 10px var(--orange-glow);transition:transform var(--t),box-shadow var(--t);
+      line-height:1;
+    }
+    .add-item-btn:hover{transform:scale(1.15);box-shadow:0 6px 18px rgba(255,104,69,.4)}
+    .add-item-btn.added{background:linear-gradient(135deg,var(--green),#2e8b60);box-shadow:0 4px 10px rgba(63,162,120,.3)}
+
+    /* ── Cart sidebar ── */
+    .cart-panel{background:var(--white);border-radius:var(--radius);border:1px solid var(--line);overflow:hidden}
+    html.dark .cart-panel{background:#1c2130;border-color:#2a2f42}
+    .cart-panel-head{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+    html.dark .cart-panel-head{border-color:#2a2f42}
+    .cart-panel-head h3{font:700 15px "Plus Jakarta Sans",sans-serif}
+    .cart-empty{padding:40px 20px;text-align:center;color:var(--muted)}
+    .cart-empty-icon{font-size:48px;margin-bottom:12px}
+    .cart-empty p{font-size:12.5px;line-height:1.6}
+    .cart-item-row{display:flex;gap:10px;align-items:center;padding:12px 20px;border-bottom:1px solid var(--line)}
+    html.dark .cart-item-row{border-color:#2a2f42}
+    .cart-item-row:last-of-type{border-bottom:0}
+    .ci-thumb{width:38px;height:38px;border-radius:8px;overflow:hidden;flex-shrink:0;font-size:22px;display:grid;place-items:center;background:var(--bg)}
+    html.dark .ci-thumb{background:#252c40}
+    .ci-info{flex:1;min-width:0}
+    .ci-info strong{font-size:12.5px;font-weight:600;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .ci-info span{font-size:11px;color:var(--muted)}
+    .ci-qty{display:flex;align-items:center;gap:8px;flex-shrink:0}
+    .ci-qty button{width:26px;height:26px;border-radius:6px;background:var(--bg);font-size:14px;display:grid;place-items:center;transition:background var(--t)}
+    html.dark .ci-qty button{background:#252c40}
+    .ci-qty button:hover{background:var(--orange-glow)}
+    .ci-qty span{font:600 13px "DM Sans",sans-serif;min-width:18px;text-align:center}
+    .cart-summary-panel{padding:16px 20px;background:var(--bg);border-top:1px solid var(--line)}
+    html.dark .cart-summary-panel{background:#141824;border-color:#2a2f42}
+    .summary-row{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:8px;color:var(--muted)}
+    .summary-row.total{font:700 15px "Plus Jakarta Sans",sans-serif;color:var(--ink);margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+    html.dark .summary-row.total{border-color:#2a2f42}
+    .checkout-btn{
+      display:block;width:100%;margin-top:14px;
+      background:linear-gradient(135deg,var(--orange),var(--orange-mid));
+      color:#fff;padding:14px;border-radius:10px;font:700 14px "DM Sans",sans-serif;
+      text-align:center;box-shadow:0 6px 20px var(--orange-glow);
+      transition:transform var(--t),box-shadow var(--t);
+    }
+    .checkout-btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(255,104,69,.4)}
+
+    /* ── Reviews section ── */
+    .reviews-section{margin-top:36px}
+    .review-grid{display:grid;gap:14px}
+    .r-review-card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+    html.dark .r-review-card{background:#1c2130;border-color:#2a2f42}
+    .r-review-head{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+    .r-review-avatar{width:38px;height:38px;border-radius:50%;overflow:hidden;flex-shrink:0;object-fit:cover}
+    .r-review-name{font:600 13px "Plus Jakarta Sans",sans-serif}
+    .r-review-date{font-size:11px;color:var(--muted)}
+    .r-review-stars{color:#eaa228;font-size:12px;margin-left:auto;letter-spacing:1px}
+    .r-review-text{font-size:13px;color:var(--muted);line-height:1.65}
+
+    /* ── Toast ── */
+    #rToast{
+      position:fixed;bottom:24px;left:50%;transform:translate(-50%,20px);
+      background:var(--navy);color:#fff;padding:12px 22px;border-radius:10px;
+      font:600 13px "DM Sans",sans-serif;opacity:0;z-index:99;white-space:nowrap;
+      transition:opacity .28s,transform .28s;box-shadow:0 10px 30px rgba(0,0,0,.22);
+      pointer-events:none;
+    }
+    #rToast.show{opacity:1;transform:translate(-50%,0)}
+
+    /* ── Responsive ── */
+    @media(max-width:860px){
+      .r-body{grid-template-columns:1fr}
+      .r-sidebar{position:static}
+      .r-hero{height:240px}
+      .r-hero-meta h1{font-size:24px}
+      .r-hero-meta{left:20px;right:20px;bottom:20px}
+    }
+    @media(max-width:520px){
+      .r-nav{padding:12px 16px}
+      .r-body{padding:20px 16px 100px}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav class="r-nav">
+    <a class="r-nav-back" href="index.html">← Back</a>
+    <a class="r-nav-brand" href="landing.html">Foodie<span>Express</span></a>
+    <button class="r-nav-cart" id="navCartBtn">
+      🛒 Cart <span class="r-cart-count" id="navCartCount">0</span>
+    </button>
+  </nav>
+
+  <!-- Hero -->
+  <div class="r-hero" id="rHero">
+    <img id="heroImg" src="" alt="">
+    <div class="r-hero-overlay"></div>
+    <div class="r-hero-meta">
+      <h1 id="rName">Loading…</h1>
+      <div class="r-hero-pills" id="rPills"></div>
+    </div>
+    <button class="r-share-btn" title="Share" onclick="navigator.clipboard?.writeText(location.href);toast('Link copied!')">🔗</button>
+  </div>
+
+  <!-- Body -->
+  <div class="r-body">
+    <div class="r-main">
+
+      <!-- Stats row -->
+      <div class="info-card" id="infoCard">
+        <div class="info-stat"><strong id="sRating" class="star">–</strong><span>Rating</span></div>
+        <div class="info-stat"><strong id="sTime"  class="clock">–</strong><span>Delivery</span></div>
+        <div class="info-stat"><strong id="sPrice" class="leaf">–</strong><span>Avg. price</span></div>
+        <div class="info-stat"><strong id="sItems">–</strong><span>Menu items</span></div>
+      </div>
+
+      <!-- Category tabs -->
+      <div class="menu-tabs" id="menuTabs"></div>
+
+      <!-- Menu sections -->
+      <div id="menuSections"></div>
+
+      <!-- Reviews -->
+      <div class="reviews-section">
+        <div class="menu-section-title">⭐ Customer reviews</div>
+        <div class="review-grid" id="reviewGrid"></div>
+      </div>
+    </div>
+
+    <!-- Cart sidebar -->
+    <aside class="r-sidebar">
+      <div class="cart-panel">
+        <div class="cart-panel-head">
+          <h3>🛒 Your order</h3>
+          <span id="cartItemCount" style="font-size:12px;color:var(--muted)">0 items</span>
+        </div>
+        <div id="cartBody">
+          <div class="cart-empty">
+            <div class="cart-empty-icon">🍽️</div>
+            <p>Add items from the menu<br>to start your order.</p>
+          </div>
+        </div>
+        <div class="cart-summary-panel" id="cartSummary" style="display:none">
+          <div class="summary-row"><span>Subtotal</span><span id="rSubtotal">₹0</span></div>
+          <div class="summary-row"><span>Delivery fee</span><span>₹39</span></div>
+          <div class="summary-row"><span>Taxes & fees</span><span id="rTax">₹0</span></div>
+          <div class="summary-row total"><span>Total</span><span id="rTotal">₹0</span></div>
+          <a class="checkout-btn" href="checkout.html" id="checkoutLink">Proceed to checkout →</a>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <div id="rToast"></div>
+
+  <script src="js/food-data.js"></script>
+  <script src="js/api.js"></script>
+  <script>
+    const {restaurants, foodItems, categories} = window.foodData;
+
+    /* ── Dark mode ── */
+    if (localStorage.getItem("darkMode") === "true") document.documentElement.classList.add("dark");
+
+    /* ── Unsplash photo map ── */
+    const CAT_PHOTOS = {
+      Pizza:"1565299624946-b28f40a0ae38", Burgers:"1568901346375-23c9450c58cd",
+      Biryani:"1565557623262-b51c2513a641", "South Indian":"1567620905732-2d1ec7ab7445",
+      Chinese:"1569718157624-e67bec5b5f17", Desserts:"1563729784474-d77dde43e61d",
+      Beverages:"1495474472287-4d71bcdd2085", Healthy:"1512621776951-a57141f2eefd",
+      default:"1504674900247-0877df9cc836",
+    };
+    /* Per-category food item photos */
+    const FOOD_PHOTOS = {
+      Pizza:"1565299624946-b28f40a0ae38", Burgers:"1568901346375-23c9450c58cd",
+      Biryani:"1565557623262-b51c2513a641", "South Indian":"1567620905732-2d1ec7ab7445",
+      Chinese:"1569718157624-e67bec5b5f17", Desserts:"1563729784474-d77dde43e61d",
+      Beverages:"1495474472287-4d71bcdd2085", Healthy:"1512621776951-a57141f2eefd",
+    };
+    const foodPhoto = (cat, w=200, h=160) => {
+      const id = FOOD_PHOTOS[cat] || "1504674900247-0877df9cc836";
+      return `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&h=${h}&q=75`;
+    };
+
+    /* ── Load restaurant from URL param ── */
+    const params = new URLSearchParams(location.search);
+    const rId = parseInt(params.get("id")) || 1;
+    const rest = restaurants.find(r => r.id === rId) || restaurants[0];
+    const items = foodItems.filter(f => f.restaurantId === rest.id);
+
+    /* ── Hero ── */
+    const heroId = CAT_PHOTOS[rest.category] || CAT_PHOTOS.default;
+    document.getElementById("heroImg").src = `https://images.unsplash.com/photo-${heroId}?auto=format&fit=crop&w=1400&h=480&q=80`;
+    document.getElementById("heroImg").alt = rest.name;
+    document.title = `${rest.name} — FoodieExpress`;
+    document.getElementById("rName").textContent = rest.name;
+    document.getElementById("rPills").innerHTML = [
+      `<span class="r-pill">★ ${rest.rating}</span>`,
+      `<span class="r-pill">⏱ ${rest.time}</span>`,
+      `<span class="r-pill">${rest.cuisine}</span>`,
+      `<span class="r-pill green">✓ FSSAI Certified</span>`,
+    ].join("");
+
+    /* ── Stats ── */
+    document.getElementById("sRating").textContent = `★ ${rest.rating}`;
+    document.getElementById("sTime").textContent = rest.time;
+    document.getElementById("sPrice").textContent = rest.price === "₹" ? "Budget" : "Mid-range";
+    document.getElementById("sItems").textContent = items.length;
+
+    /* ── Group items by category ── */
+    const grouped = {};
+    items.forEach(item => {
+      if (!grouped[item.category]) grouped[item.category] = [];
+      grouped[item.category].push(item);
+    });
+    const catNames = Object.keys(grouped);
+
+    /* ── Tabs ── */
+    const tabsEl = document.getElementById("menuTabs");
+    tabsEl.innerHTML = catNames.map((cat, i) =>
+      `<button class="menu-tab ${i===0?"active":""}" data-tab="${cat}">${grouped[cat][0]?.emoji||""} ${cat}</button>`
+    ).join("");
+    tabsEl.querySelectorAll(".menu-tab").forEach(btn =>
+      btn.onclick = () => {
+        tabsEl.querySelectorAll(".menu-tab").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        document.getElementById("sec-" + btn.dataset.tab)?.scrollIntoView({behavior:"smooth", block:"start"});
+      }
+    );
+
+    /* ── Cart state synced with foodieApi ── */
+    function updateCartUI() {
+      const items = foodieApi.getCart();
+      const count = items.reduce((s, i) => s + i.qty, 0);
+      const subtotal = items.reduce((s, i) => s + (i.price * i.qty), 0);
+      const tax = Math.round(subtotal * 0.05);
+
+      document.getElementById("navCartCount").textContent = count;
+      document.getElementById("cartItemCount").textContent = `${count} item${count !== 1 ? "s" : ""}`;
+      document.getElementById("rSubtotal").textContent = `₹${subtotal.toLocaleString("en-IN")}`;
+      document.getElementById("rTax").textContent = `₹${tax.toLocaleString("en-IN")}`;
+      document.getElementById("rTotal").textContent = `₹${(subtotal + (count ? 39 : 0) + tax).toLocaleString("en-IN")}`;
+      
+      const summary = document.getElementById("cartSummary");
+      const body = document.getElementById("cartBody");
+      if (!count) {
+        summary.style.display = "none";
+        body.innerHTML = `<div class="cart-empty"><div class="cart-empty-icon">🍽️</div><p>Add items from the menu<br>to start your order.</p></div>`;
+        return;
+      }
+      summary.style.display = "block";
+      body.innerHTML = items.map(item => `
+        <div class="cart-item-row">
+          <div class="ci-thumb">${item.emoji || "🍽️"}</div>
+          <div class="ci-info">
+            <strong>${item.name.split(" ").slice(0,3).join(" ")}</strong>
+            <span>₹${item.price} each</span>
+          </div>
+          <div class="ci-qty">
+            <button data-dec="${item.name}">−</button>
+            <span>${item.qty}</span>
+            <button data-inc="${item.name}">+</button>
+          </div>
+        </div>`).join("");
+
+      body.querySelectorAll("[data-inc]").forEach(b => b.onclick = () => {
+        foodieApi.updateCartQty(b.dataset.inc, 1);
+        updateCartUI();
+      });
+      body.querySelectorAll("[data-dec]").forEach(b => b.onclick = () => {
+        foodieApi.updateCartQty(b.dataset.dec, -1);
+        updateCartUI();
+      });
+    }
+
+    window.addEventListener("foodie-cart-updated", updateCartUI);
+
+    function addToCart(item) {
+      foodieApi.addToCart({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        category: item.category,
+        emoji: item.emoji || "🍽️",
+        restaurant: rest.name,
+        restaurantId: rest.id
+      });
+      updateCartUI();
+      toast(`🛒 ${item.name.split(" ").slice(0,3).join(" ")} added`);
+      
+      const btn = document.querySelector(`[data-add-id="${item.id}"]`);
+      if (btn) {
+        btn.textContent = "✓"; btn.classList.add("added");
+        setTimeout(() => { btn.textContent = "+"; btn.classList.remove("added"); }, 900);
+      }
+    }
+
+    /* ── Menu sections ── */
+    document.getElementById("menuSections").innerHTML = catNames.map(cat => `
+      <div class="menu-section" id="sec-${cat}">
+        <div class="menu-section-title">${grouped[cat][0]?.emoji||""} ${cat}</div>
+        <div class="food-list">
+          ${grouped[cat].map(item => `
+            <div class="food-item" onclick="addToCart(${JSON.stringify(item).replace(/"/g,'&quot;')})">
+              <div class="food-item-photo">
+                <img src="${foodPhoto(item.category)}" alt="${item.name}" loading="lazy">
+                <div class="veg-dot ${item.vegetarian?"veg":"nonveg"}"></div>
+              </div>
+              <div class="food-item-info">
+                <h4>${item.name}</h4>
+                <p>${item.description}</p>
+                <div class="food-item-foot">
+                  <div>
+                    <span class="food-price">₹${item.price}</span>
+                    <span class="food-tag" style="margin-left:8px">★ ${item.rating}</span>
+                  </div>
+                  <button class="add-item-btn" data-add-id="${item.id}" aria-label="Add ${item.name}" onclick="event.stopPropagation();addToCart(${JSON.stringify(item).replace(/"/g,'&quot;')})">+</button>
+                </div>
+              </div>
+            </div>`).join("")}
+        </div>
+      </div>`).join("");
+
+    /* ── Reviews ── */
+    const reviewNames = [
+      {name:"Priya S.", img:"1494790108377-be9c29b29330", stars:5, text:"Absolutely loved the food! Fresh, hot, and perfectly spiced. Delivery was super quick too. Highly recommend this place!"},
+      {name:"Rahul M.", img:"1507003211169-0a1dd7228f2d", stars:5, text:"One of the best restaurants I've ordered from on FoodieExpress. The portions are generous and the flavour is restaurant-quality at home."},
+      {name:"Ananya K.", img:"1438761681033-6461ffad8d80", stars:4, text:"Great food and fast delivery. The packaging was neat and everything arrived warm. Will definitely order again next week!"},
+    ];
+    document.getElementById("reviewGrid").innerHTML = reviewNames.map(r => `
+      <div class="r-review-card">
+        <div class="r-review-head">
+          <img class="r-review-avatar" src="https://images.unsplash.com/photo-${r.img}?auto=format&fit=crop&w=80&h=80&q=80" alt="${r.name}" loading="lazy">
+          <div>
+            <div class="r-review-name">${r.name}</div>
+            <div class="r-review-date">Verified order · ${Math.floor(Math.random()*28)+1} days ago</div>
+          </div>
+          <div class="r-review-stars">${"★".repeat(r.stars)}${"☆".repeat(5-r.stars)}</div>
+        </div>
+        <div class="r-review-text">${r.text}</div>
+      </div>`).join("");
+
+    /* ── Toast ── */
+    function toast(msg) {
+      const t = document.getElementById("rToast");
+      t.textContent = msg; t.classList.add("show");
+      clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove("show"), 2200);
+    }
+
+    /* ── Nav cart click → go to checkout ── */
+    document.getElementById("navCartBtn").onclick = () => {
+      if (cartCount() > 0) window.location.href = "checkout.html";
+      else toast("Add items before checking out");
+    };
+
+    updateCartUI();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+package com.bitedash.repository; import com.bitedash.entity.*; import org.springframework.data.jpa.repository.JpaRepository; import java.util.*; public interface ReviewRepository extends JpaRepository<Review,Long>{List<Review> findByRestaurantIdOrderByCreatedAtDesc(Long id); boolean existsByUserIdAndRestaurantId(Long u,Long r);}
